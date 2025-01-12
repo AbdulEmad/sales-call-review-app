@@ -16,4 +16,5 @@ class Settings(BaseSettings):
     def get_cors_origins(self):
         return ast.literal_eval(self.BACKEND_CORS_ORIGINS)
 
+
 settings = Settings()
