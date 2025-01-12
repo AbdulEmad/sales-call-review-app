@@ -1,51 +1,20 @@
-version: '3.8'  # You can use any version compatible with your setup
-
 services:
   frontend:
     build:
       context: ./frontend
-      args:
-        NEXT_PUBLIC_API_URL: http://188.245.183.136:8000  # Your backend public IP or domain
-    container_name: chaka-chaka-frontend
+    container_name: call-review-frontend
     ports:
       - "3000:3000"
-    environment:
-      - NEXT_PUBLIC_API_URL=http://188.245.183.136:8000  # Passed at runtime as well
     depends_on:
       - backend
     restart: always
-
   backend:
     build: ./backend
-    container_name: chaka-chaka-backend
+    container_name: call-review-backend
     ports:
       - "8000:8000"
     environment:
-      - OPENAI_API_KEY=${OPENAI_API_KEY}  # Get these values from .env file or set them directly here
-      - ASSISTANT_ID=${ASSISTANT_ID}
-      - DB_URL=postgresql://${DB_USER}:${DB_PASSWORD}@db:5432/${DB_DATABASE}
-      - BACKEND_CORS_ORIGINS=${BACKEND_CORS_ORIGINS}
-      - DB_DATABASE=${DB_DATABASE}
-      - DB_USER=${DB_USER}
-      - DB_PASSWORD=${DB_PASSWORD}
-      - PROJECT_NAME=${PROJECT_NAME}
-      - SECRET_KEY=${SECRET_KEY}
-    depends_on:
-      - db
-    restart: always
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - BACKEND_CORS_ORIGINS = ${BACKEND_CORS_ORIGINS}
 
-  db:
-    image: postgres:13
-    container_name: chaka-chaka-db
-    ports:
-      - "5432:5432"
-    environment:
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_DATABASE}
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
     restart: always
-
-volumes:
-  postgres_data:

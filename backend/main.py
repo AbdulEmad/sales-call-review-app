@@ -58,7 +58,7 @@ def answer_question(payload: AnswerRequest):
         api_key=settings.ANTHROPIC_API_KEY,
     )
 
-    question_prompt = f"""Given the folowing transcript:\n
+    question_prompt = f"""Given the following transcript:\n
         {call_transcript}\n\n
         answer the following question:\n
         {payload.question}
