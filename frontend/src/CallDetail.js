@@ -5,23 +5,25 @@ function CallDetail({ callId }) {
   const [answer, setAnswer] = useState("");
   const [callData, setCallData] = useState(null);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
   const backendApiUrl = process.env.REACT_APP_BACKEND_API_URL || "http://localhost:8000";
 
   useEffect(() => {
     const fetchCallData = async () => {
-      if (callId) {
-        try {
-          const resp = await fetch(`${backendApiUrl}/calls/${callId}`);
-          if (!resp.ok) throw new Error("Failed to fetch call data");
-          const data = await resp.json();
-          setCallData(data);
-          setError("");
-          setQuestion("");
-          setAnswer("");
-        } catch (err) {
-          console.error("Error fetching call details:", err);
-          setError("Could not load call details");
-        }
+      setLoading(true);
+      try {
+        const resp = await fetch(`${backendApiUrl}/calls/${callId}`);
+        if (!resp.ok) throw new Error("Failed to fetch call data");
+        const data = await resp.json();
+        setCallData(data);
+        setError("");
+        setQuestion("");
+        setAnswer("");
+      } catch (err) {
+        console.error("Error fetching call details:", err);
+        setError("Could not load call details");
+      } finally {
+        setLoading(false);
       }
     };
     fetchCallData();
@@ -53,6 +55,18 @@ function CallDetail({ callId }) {
     const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', timeZoneName: 'short' };
     return new Date(dateString).toLocaleString(undefined, options);
   };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-full">
+        <div className="loader">Loading...</div>
+      </div>
+    );
+  }
+
+  if (!callData) {
+    return <div>No call data available.</div>;
+  }
 
   return (
     <div className="flex flex-col p-6 bg-gray-50 min-h-screen space-y-6">
@@ -101,6 +115,11 @@ function CallDetail({ callId }) {
             >
               {callData.transcript?.text || "No transcript available"}
             </div>
+          </div>
+
+          <div className="bg-white shadow-md rounded-lg p-4 mb-4">
+            <strong className="block text-lg mb-2">Call Summary:</strong>
+            <p className="text-gray-700">{callData.inference_results.call_summary}</p>
           </div>
         </>
       )}
