@@ -8,7 +8,7 @@ function CallDetail({ callId }) {
 
   useEffect(() => {
     if (callId) {
-      fetch(`${process.env.REACT_APP_BACKEND_API_URL}/${callId}`)
+      fetch(`${process.env.REACT_APP_BACKEND_API_URL}/calls/${callId}`)
         .then((resp) => {
           if (!resp.ok) {
             throw new Error("Failed to fetch call data");
