@@ -8,7 +8,7 @@ function CallDetail({ callId }) {
 
   useEffect(() => {
     if (callId) {
-      fetch(`http://localhost:8000/calls/${callId}`)
+      fetch(`${process.env.BACKEND_API_URL}/${callId}`)
         .then((resp) => {
           if (!resp.ok) {
             throw new Error("Failed to fetch call data");
@@ -28,7 +28,7 @@ function CallDetail({ callId }) {
 
   const handleAsk = async () => {
     try {
-      const resp = await fetch("http://localhost:8000/answer", {
+      const resp = fetch(`${process.env.BACKEND_API_URL}/answer`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ call_id: callId, question: question }),

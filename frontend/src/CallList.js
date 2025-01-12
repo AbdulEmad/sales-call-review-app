@@ -4,7 +4,7 @@ function CallList({ onSelectCall }) {
   const [calls, setCalls] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:8000/calls")
+    fetch(`${process.env.BACKEND_API_URL}/calls`)
       .then((res) => res.json())
       .then((data) => setCalls(data))
       .catch((err) => console.error("Error fetching calls:", err));
