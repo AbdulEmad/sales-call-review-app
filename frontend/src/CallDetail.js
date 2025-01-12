@@ -28,14 +28,16 @@ function CallDetail({ callId }) {
 
   const handleAsk = async () => {
     try {
-      const resp = fetch(`${process.env.REACT_APP_BACKEND_API_URL}/answer`, {
+      const resp = await fetch(`${process.env.REACT_APP_BACKEND_API_URL}/answer`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ call_id: callId, question: question }),
       });
+  
       if (!resp.ok) {
-        throw new Error("Failed to fetch answer");
+        throw new Error(`Failed to fetch answer: ${resp.status} ${resp.statusText}`);
       }
+  
       const data = await resp.json();
       setAnswer(data.answer);
     } catch (err) {
