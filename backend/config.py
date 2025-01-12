@@ -14,7 +14,7 @@ class Settings(BaseSettings):
     BACKEND_CORS_ORIGINS: Union[List[str], str] = Field(..., env="BACKEND_CORS_ORIGINS")
 
     def get_cors_origins(self):
-        return ast.literal_eval(self.BACKEND_CORS_ORIGINS)
-
+        # return ast.literal_eval(self.BACKEND_CORS_ORIGINS)
+        return self.BACKEND_CORS_ORIGINS
 
 settings = Settings()

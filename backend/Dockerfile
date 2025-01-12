@@ -1,4 +1,4 @@
-FROM python:3.12.6
+FROM python:3.13.1
 
 WORKDIR /app
 
@@ -15,4 +15,4 @@ ENV PYTHONPATH=src
 
 EXPOSE 8000
 
-CMD ["poetry", "run", "uvicorn", "src.chaka_chaka.api.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["poetry", "run", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
